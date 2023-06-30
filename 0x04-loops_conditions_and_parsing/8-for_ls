@@ -1,12 +1,7 @@
 #!/usr/bin/env bash
-# This script displays the content of the current directory in a list format,
-# where only the part of the name after the first dash is displayed
+# a bash script that displays the content of the current directory in a list format using for loop
 
-for file in *
-do
-    if [[ -f $file && $file != .* ]]
-    then
-        name=${file#*-}
-        echo "$name"
-    fi
+list=$(ls)
+for i in $list; do
+echo "$i" | cut -d '-' -f2
 done
