@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+awk '{ a[$1" "$9]++ } END { for (i in a) print a[i], i }' apache-access.log | sort -nr
