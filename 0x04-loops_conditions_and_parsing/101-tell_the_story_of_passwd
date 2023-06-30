@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
+# a bash script that displays the content of the file /etc/passwd using the while loop + IFS
 
-while IFS=':' read -r username _ userid groupid _ homedir shell
-do
-    read -r _ _ _ _ info <<< "$(grep "^$username:" /etc/passwd)"
-    read -r _ _ password _ <<< "$info"
-
-    echo "The user $username is part of the $groupid gang, lives in $homedir and rides $shell. $userid's place is protected by the passcode $password, more info about the user here: $info"
-done < /etc/passwd
+while IFS=':' read -r username password uid gid info home shell; do
+	echo "The user $username is part of the $gid gang,"\
+		"lives in $home and rides $shell."\
+		"$uid's place is protected by the passcode $password,"\
+		"more info about the user here: $info"
+		done < "/etc/passwd"
