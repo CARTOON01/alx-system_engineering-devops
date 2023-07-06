@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Changes IPs tied to domain names
+# echo "8.8.8.8		facebook.com" | sudo tee -a /etc/hosts.old
+
+cp /etc/hosts ~/hosts.alter
+echo "127.0.0.2    localhost" > ~/hosts.alter
+echo "8.8.8.8      facebook.com" >> ~/hosts.alter
+cp -f ~/hosts.alter /etc/hosts
