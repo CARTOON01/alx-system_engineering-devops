@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# This script configures a brand new Ubuntu machine to contain custom header
+
+sudo apt-get update -y
+sudo apt-get install -y nginx
+header="\\\tadd_header X-Served-By $HOSTNAME;"
+sudo sed -i "26i $header" /etc/nginx/nginx.conf
+sudo service nginx restart
