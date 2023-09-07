@@ -1,12 +1,30 @@
 #!/usr/bin/env bash
-# This script installs nginx on ubuntu server
+# Configure your Nginx server to have a custom 404 page
 
-sudo apt-get update -y && sudo apt-get upgrade -y
-sudo apt-get install -y nginx
-sudo ufw allow 'Nginx HTTP'
-echo "Hello World!" | sudo tee /var/www/html/index.nginx-debian.html
-line="\\\trewrite ^/redirect_me http://briangugi.tech permanent;"
-sudo sed -i "26i $line" /etc/nginx/sites-available/default
-echo "Ceci n'est pas une page" | sudo tee /var/www/html/error-page.html
-sudo sed -i "38i\\\terror_page 404 /error-page.html;" /etc/nginx/sites-available/default
-sudo service nginx restart
+apt-get update
+apt-get install -y nginx
+
+mkdir /etc/nginx/html
+touch /etc/nginx/html/index.html
+echo "Hello World!" > /etc/nginx/html/index.html
+touch /etc/nginx/html/404.html
+echo "Ceci n'est pas une page" > /etc/nginx/html/404.html
+
+printf %s "server {
+    listen 80;
+    listen [::]:80 default_server;
+    root   /etc/nginx/html;
+    index  index.html index.htm;
+
+    location /redirect_me {
+        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+    }
+
+    error_page 404 /404.html;
+    location /404 {
+      root /etc/nginx/html;
+      internal;
+    }
+}" > /etc/nginx/sites-available/default
+
+service nginx restart
