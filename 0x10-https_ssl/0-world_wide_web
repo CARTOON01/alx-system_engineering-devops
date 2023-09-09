@@ -1,21 +1,6 @@
-#!/usr/bin/env bash
-# This script will display information about subdomains.
+# Installs a Nginx server
 
-func_print ()
-{
-	dns=$(dig "$2.$1" | awk '/ANSWER SECTION:/ { getline;print $4 }')
-	ip=$(dig "$2.$1" | awk '/ANSWER SECTION:/ { getline;print $5 }')
-	echo "The subdomain $2 is a $dns record and points to $ip"
+exec {'install':
+  provider => shell,
+  command  => 'sudo apt-get -y update ; sudo apt-get -y install nginx ; echo "Hello World!" | sudo tee /var/www/html/index.nginx-debian.html ; sudo sed -i "s/server_name _;/server_name _;\n\trewrite ^\/redirect_me https:\/\/github.com\/CARTOON01 permanent;/" /etc/nginx/sites-available/default ; sudo service nginx start',
 }
-
-if [ "$#" -lt 2 ]
-then
-	func_print "$1" "www"
-	func_print "$1" "lb-01"
-	func_print "$1" "web-01"
-	func_print "$1" "web-02"
-else
-	func_print "$1" "$2"
-fi
-
-exit 0
