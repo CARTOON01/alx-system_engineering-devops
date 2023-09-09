@@ -1,6 +1,26 @@
-# Installs a Nginx server
+#!/usr/bin/env bash
+# Bash script that will display information about subdomains.
+function domain_check {
+	domain_names=("www" "lb-01" "web-01" "web-02")
 
-exec {'install':
-  provider => shell,
-  command  => 'sudo apt-get -y update ; sudo apt-get -y install nginx ; echo "Hello World!" | sudo tee /var/www/html/index.nginx-debian.html ; sudo sed -i "s/server_name _;/server_name _;\n\trewrite ^\/redirect_me https:\/\/github.com\/CARTOON01 permanent;/" /etc/nginx/sites-available/default ; sudo service nginx start',
+	for i in "${domain_names[@]}";
+	do
+		dig "${i}"."$1" | grep -A1 'ANSWER SECTION:' | \
+		awk 'FNR == 2 {printf "The subdomain %s is a %s record and points to %s\n", var, $4, $5}' var="$i"
+	done
 }
+
+function subdomain_check {
+	dig "${2}"."$1" | grep -A1 'ANSWER SECTION:' | \
+	awk 'FNR == 2 {printf "The subdomain %s is a %s record and points to %s\n", var, $4, $5}' var="$2"
+}
+
+if [ $# -lt 1 ]
+then
+	echo "*** Provide domain name ***"
+elif [ $# -eq 1 ]
+then
+	domain_check "$1";
+else
+	subdomain_check "$1" "$2";
+fi
