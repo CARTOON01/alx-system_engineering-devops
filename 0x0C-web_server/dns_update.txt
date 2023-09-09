@@ -1,0 +1,5 @@
+server 35.241.18.84
+zone briangugi.tech
+update delete briangugi.tech
+update add briangugi.tech 3600 A 18.234.107.37
+send
