@@ -14,7 +14,7 @@ frontend main
 
 backend app-main
     balance roundrobin
-    server 247963-web-01	18.234.107.37 check
-    server 247963-web-02	52.91.151.209 check
+    server 247963-web-01	3.83.253.236 check
+    server 247963-web-02	54.227.197.57 check
     " >> /etc/haproxy/haproxy.cfg
 sudo service haproxy start
