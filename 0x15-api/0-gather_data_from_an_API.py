@@ -23,7 +23,6 @@ if __name__ == "__main__":
                 completed += 1
 
     print("Employee {} is done with tasks({}/{}):".format(employee.get('name'),
-                                                          completed, total))
+                                                        completed, total))
     for item in list_tasks:
         print("\t {}".format(item))
-        
